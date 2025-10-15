@@ -7,8 +7,23 @@ from nltk.stem.porter import PorterStemmer
 
 import os
 
+
+# Define where NLTK data is (same as in your nltk_script.py)
 nltk_data_path = os.path.join(os.path.expanduser("~"), "nltk_data")
+
+# Create folder if it doesn't exist
+if not os.path.exists(nltk_data_path):
+    os.makedirs(nltk_data_path)
+
+# Add to NLTK search path
 nltk.data.path.append(nltk_data_path)
+
+# Ensure required resources are available at runtime
+for resource in ['punkt', 'stopwords', 'punkt_tab']:
+    try:
+        nltk.data.find(f"tokenizers/{resource}" if 'punkt' in resource else f"corpora/{resource}")
+    except LookupError:
+        nltk.download(resource, download_dir=nltk_data_path)
 
 
 
